@@ -11,6 +11,8 @@ var Letter = require('./Letter.js')
 
 function Word(selectedWord) {
 	var self = this;
+	this.word = selectedWord;
+	this.letterArray = [];
 	this.letters = selectedWord.split('');
 	// var lettersLength = this.letters.length
 	var underscores = []
@@ -23,12 +25,43 @@ function Word(selectedWord) {
 
 	this.getLets = function() {
 	    //populate the collection above with new Letter objects
-	    for(var i = 0; i < this.length; i++){
+	    for(var i = 0; i < this.word.length; i++){
 	      var newLetter = new Letter(this.letters[i]);
 	      this.letters.push(newLetter);
     	}
+	};	
 
-	}	
+	this.checkWord = function() {
+		if (this.letters.every(function(inquirerResponse) {
+			return inquirerResponse.appear === true;
+		})) {
+			this.wordFound = true;
+				return true;
+		}
+	};
+
+	this.checkGuessedLetter = function (guessedLetter) {
+		var whatToReturn = 0
+
+		this.letterArray.forEach(function(inquirerResponse) {
+			if (inquirerResponse.letterArray === guessedLetter) {
+				inquirerResponse.appear = true;
+				whatToReturn++
+			}
+		})
+
+		return whatToReturn;
+	}
+
+	this.renderWord = function() {
+		var display = '';
+
+		this.letterArray.forEach(function(inquirerResponse) {
+			var currentLetter = inquirerResponse.letterRender();
+			display += currentLetter
+		})
+		return display
+	}
 }	
 
 module.exports = Word;

@@ -6,15 +6,15 @@ userInput
 
 Steps
 
-1.a.Create a word Array 
+1.a.Create a word Array //
 
-1.b. iterated over to randomly select one word
+1.b. iterated over to randomly select one word//
 
-2.how many letters in the word?
+2.how many letters in the word?//
 
-3.render number of letters as underscores = Make a function!
+3.render number of letters as underscores = Make a //function!
 
-4.a. store user input as a variable
+4.a. store user input as a variable//
 
 4.b. check user input to see if it matches a letter in the word
 
