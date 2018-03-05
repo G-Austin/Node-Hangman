@@ -1,6 +1,8 @@
 # Node-Hangman
 A game of hangman built using constructors and Node.
 
+Check out the game flow in the following images.
+
 ![Game flow 1](./Images/Screen_Shot_1.png)
 
 ![Game flow 2](./Images/Screen_Shot_2.png)
