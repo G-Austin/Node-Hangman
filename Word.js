@@ -1,6 +1,6 @@
-//Contains a constructor, Word that depends on the 
-//Letter constructor. This is used to create an object 
-//representing the current word the user is attempting to guess. 
+//Contains a constructor, Word that depends on the
+//Letter constructor. This is used to create an object
+//representing the current word the user is attempting to guess.
 //That means the constructor should define:
 
 // An array of new Letter objects representing the letters of the underlying word
@@ -13,26 +13,18 @@ function Word(selectedWord) {
 	var self = this;
 	this.word = selectedWord;
 	this.letterArray = [];
-	this.letters = selectedWord.split('');
-	// var lettersLength = this.letters.length
-	var underscores = []
-	for (var i = 0; i < this.letters.length; i++) {
-		underscores.push('_ ')
-	}
-	//console.log('underscores', underscores);
-	var blankWord = underscores.join('');
-	console.log('blankWord', blankWord);
-
-	this.getLets = function() {
+	this.wordFound = false;
+  //get letters and push to letterArray
+	this.getLetters = function() {
 	    //populate the collection above with new Letter objects
 	    for(var i = 0; i < this.word.length; i++){
-	      var newLetter = new Letter(this.letters[i]);
-	      this.letters.push(newLetter);
+	      var newLetter = new Letter(this.word[i]);
+	      this.letterArray.push(newLetter);
     	}
-	};	
+	};
 
 	this.checkWord = function() {
-		if (this.letters.every(function(inquirerResponse) {
+		if (this.letterArray.every(function(inquirerResponse) {
 			return inquirerResponse.appear === true;
 		})) {
 			this.wordFound = true;
@@ -43,25 +35,25 @@ function Word(selectedWord) {
 	this.checkGuessedLetter = function (guessedLetter) {
 		var whatToReturn = 0
 
-		this.letterArray.forEach(function(inquirerResponse) {
-			if (inquirerResponse.letterArray === guessedLetter) {
-				inquirerResponse.appear = true;
+		this.letterArray.forEach(function(abc) {
+			if (abc.letter === guessedLetter) {
+				abc.appear = true;
 				whatToReturn++
 			}
 		})
-
+		//if guessLetter matches Letter the letter should be shown
 		return whatToReturn;
 	}
 
 	this.renderWord = function() {
 		var display = '';
 
-		this.letterArray.forEach(function(inquirerResponse) {
-			var currentLetter = inquirerResponse.letterRender();
+		this.letterArray.forEach(function(abc) {
+			var currentLetter = abc.letterRender();
 			display += currentLetter
 		})
 		return display
 	}
-}	
+}
 
 module.exports = Word;

@@ -1,10 +1,9 @@
 function Letter(abc) {
-	var self = this;
-	// A boolean value that stores whether that letter has been guessed yet
-	this.guessed = false;
+	this.letter = abc;
+	this.appear = false;
 
-	// A function that returns the underlying character 
-	//if the letter has been guessed, or a placeholder 
+	// A function that returns the underlying character
+	//if the letter has been guessed, or a placeholder
 	//(like an underscore) if the letter has not been guessed
 	this.letterRender = function() {
     	if(this.letter == ' '){ /*renders a blank as it is*/

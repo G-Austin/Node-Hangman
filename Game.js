@@ -1,13 +1,14 @@
+var inquirer = require('inquirer');
+var isLetter = require('is-letter');
+var prompt = require('prompt');
+
 var wordsArray = require('./wordsArray.js');
 var Word = require('./Word.js');
-var inquirer = require('inquirer');
-var prompt = require('prompt')
-var isLetter = require('is-letter')
 
-
-// var letter
+var guessCount = 10;
 var guessedLetters = [];
 var currentWord
+
 
 function startGame() {
 	console.log("===========================");
@@ -19,37 +20,41 @@ function startGame() {
 			type: 'confirm',
 			message: 'Ready to play?'
 		}
-		]).then(function(answer) {
+	]).then(function(answer) {
 			console.log('=======================');
 			if (answer.play) {
 				console.log("Let's get started! You have 10 chances.")
 				playGame();
 			} else {
 				console.log("Why are you even here then!?")
+				//process.exit(-1);
 			}
 		})
 }
 
 function playGame() {
-	guessCount = 10
+	//Reset guessCount and guessedLetters
+	guessCount = 10;
 	guessedLetters = [];
-	currentWord = new Word(wordsArray[Math.floor(Math.random() * wordsArray.length)]);	
-	console.log('currentWord', currentWord);
-	
-	guessLetter();
+	//Get a random word from the wordsArray
+	currentWord = new Word(wordsArray[Math.floor(Math.random() * wordsArray.length)]);
+	console.log('currentWord', currentWord)
+	currentWord.getLetters();
+	// console.log('currentWord.renderWord()', currentWord.renderWord());
+	guessLetterPrompt();
 
 };
 
 
-function guessLetter() {
-	console.log("guessLetter is running")	
+function guessLetterPrompt() {
+	console.log("guessLetterPrompt is running")
 	// if (game.play.guessCount > 0) {
 	// console.log("Guess A Letter");
 	inquirer.prompt([
 		{
 			name: "userGuess",
 			type: "input",
-			message: "Guess A Letter",
+			message: "Choose a letter.",
 			validate: function(value) {
 				if(isLetter(value)) {
 					return true;
@@ -61,11 +66,11 @@ function guessLetter() {
 
 		])
 		.then(function(abc) {
-			console.log('.then function is running');
+			// console.log('.then function is running');
 			var letterReturned = (abc.userGuess).toLowerCase();
 			var alreadyGuessed = false;
 			for (var i = 0; i < guessedLetters.length; i++) {
-				if(letterReturned === guessedLetters[i]) { 
+				if(letterReturned === guessedLetters[i]) {
 					alreadyGuessed = true
 				}
 			}
@@ -83,31 +88,34 @@ function guessLetter() {
 				} else {
 					console.log("Correct!");
 					if (currentWord.checkWord() === true) {
-						console.log(currentWord.renderWord());
-						console.log("You guessed: " + guessedLetters);
+						// console.log(currentWord.renderWord());
+						console.log("You guessed: " + currentWord.renderWord());
 						console.log("Nice work! You win!");
 						startGame();
 					} else {
-						console.log(currentWord.renderWord());
+						console.log('currentWord.renderWord()', currentWord.renderWord());
 						console.log('Letters guessed: ' + guessedLetters);
 						console.log('Incorrect guesses remaining: ' + guessCount)
+
 					}
-				}					
-				
+				}
+				// If guesses remain, prompt user to guess again.
 				if (guessCount > 0 && currentWord.wordFound === false) {
-	                guessLetter();
-	            } else if (guessCount === 0) {
-	// if no more guesses, you lose           
-	                console.log('The word you were trying to guess was: ' + currentWord.word)
-	                console.log('\nSORRY.  TRY AGAIN...\n')
-	                startGame()             
-	            }
-        	} else { 
-// if previously guessed letter, promptUser()
-            console.log("You've guessed that letter already, try again.")
-            guessLetter();
+
+					 guessLetterPrompt();
+				// If guesses have run out, game over, and restart game.
+	      } else if (guessCount === 0) {
+						 			// if no more guesses, you lose
+	                console.log('The word you were trying to guess was: ' + currentWord.wordRender());
+	                console.log('\nSORRY.  TRY AGAIN...\n');
+	                // startGame();
+	          }
+        } else {
+						// if previously guessed letter, promptUser()
+            console.log("You've guessed that letter already, try again.");
+            guessLetterPrompt();
         	}
 		});
 
-}; 
+};
 startGame();
